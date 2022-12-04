@@ -1,0 +1,2 @@
+-- Hello future me! Have fun with this one, will ya?
+-- Tip: It's probably wise to do a full rewrite of this code, lest you tread the path of Cheese.
