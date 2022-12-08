@@ -3,6 +3,9 @@ import Data.List
 import Data.Maybe
 import Data.List.Split
 
+deleteSize :: Integer -> Integer
+deleteSize rootSize = 30000000 - (70000000 - rootSize)
+
 data File =
     File {
         fname :: String,
@@ -65,10 +68,12 @@ makeFullTree string = calculateDirSizes (processCommands string (Dir "/" [] [] T
 calculateDirSizes tree = Dir (name tree) sized_dirs (files tree) (active tree) ((sum [dirsize d | d <- sized_dirs]) + (sum [size f | f <- files tree]))
     where sized_dirs = [calculateDirSizes d | d <- dirs tree]
 
+
+
 flattenDirVals tree = (dirsize tree):(concat [flattenDirVals d | d <- dirs tree])
 
-getDirSum str = sum [x | x <- flattenDirVals (makeFullTree str), x <= 100000] 
-
+getDirSum str = foldr1 min [x | x <- dirVals, x >= (deleteSize (head(dirVals)))] 
+    where dirVals = flattenDirVals (makeFullTree str)
 main = do
     stuff <- readFile "./input.txt"
     print (show (makeFullTree (lines stuff)))
